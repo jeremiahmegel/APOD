@@ -35,7 +35,7 @@ func main() {
 	// TODO Test for correct argument usage
 
 	imgPath := getImagePath(urlBase + htmlPath)
-	imgFile := downloadImage(urlBase + string(imgPath))
+	imgFile := downloadImage(urlBase + imgPath)
 	os.Rename(imgFile.Name(), fileLocation)
 	cmd := exec.Command("gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file://"+fileLocation)
 	cmd.Start()
