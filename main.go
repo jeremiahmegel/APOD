@@ -1,10 +1,10 @@
 package main
 
 import (
-	"net/http"
 	"io/ioutil"
-	"regexp"
+	"net/http"
 	"os/exec"
+	"regexp"
 )
 
 func main() {
