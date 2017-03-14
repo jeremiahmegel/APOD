@@ -15,8 +15,8 @@ func main() {
 	imgPath := imgRegex.FindSubmatch(body)
 	imgResp, _ := http.Get("https://apod.nasa.gov/" + string(imgPath[1]))
 	img, _ := ioutil.ReadAll(imgResp.Body)
-	ioutil.WriteFile("/home/jm/abc.jpg", img, 0644)
-	cmd := exec.Command("gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file:///home/jm/abc.jpg")
+	ioutil.WriteFile("/home/jm/Pictures/Wallpapers/apod.jpg", img, 0644)
+	cmd := exec.Command("gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file:///home/jm/Pictures/Wallpapers/apod.jpg")
 	cmd.Start()
 }
 
