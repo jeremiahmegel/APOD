@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 )
 
@@ -33,10 +34,11 @@ func main() {
 	args := os.Args
 	fileLocation := args[1]
 	// TODO Test for correct argument usage
+	fileLocationAbs, _ := filepath.Abs(fileLocation)
 
 	imgPath := getImagePath(urlBase + htmlPath)
 	imgFile := downloadImage(urlBase + imgPath)
-	os.Rename(imgFile.Name(), fileLocation)
-	cmd := exec.Command("gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file://"+fileLocation)
+	os.Rename(imgFile.Name(), fileLocationAbs)
+	cmd := exec.Command("gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file://"+fileLocationAbs)
 	cmd.Start()
 }
