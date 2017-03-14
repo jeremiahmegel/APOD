@@ -2,12 +2,14 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"time"
 )
 
 const urlBase = "https://apod.nasa.gov/apod/"
@@ -39,6 +41,17 @@ func main() {
 	}
 	fileLocation := flag.Arg(0)
 	fileLocationAbs, _ := filepath.Abs(fileLocation)
+
+	fileStat, err := os.Stat(fileLocationAbs)
+	if err == nil {
+		modTime := fileStat.ModTime()
+		now := time.Now()
+		todayMidnight := now.Truncate(24 * time.Hour)
+		if modTime.After(todayMidnight) {
+			fmt.Fprintln(os.Stderr, "File has been updated today; not checking for updates")
+			os.Exit(0)
+		}
+	}
 
 	imgPath := getImagePath(urlBase + htmlPath)
 	imgFile := downloadImage(urlBase + imgPath)
