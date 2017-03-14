@@ -11,11 +11,13 @@ import (
 const urlBase = "https://apod.nasa.gov/apod/"
 const htmlPath = "astropix.html"
 
-func downloadImage(imageURL string, fileLocation string) {
+func downloadImage(imageURL string) *os.File {
 	imgResp, _ := http.Get(imageURL)
 	defer imgResp.Body.Close()
 	img, _ := ioutil.ReadAll(imgResp.Body)
-	ioutil.WriteFile(fileLocation, img, 0644)
+	tmpFile, _ := ioutil.TempFile("", "apod")
+	tmpFile.Write(img)
+	return tmpFile
 }
 
 func getImagePath(htmlURL string) string {
@@ -33,7 +35,8 @@ func main() {
 	// TODO Test for correct argument usage
 
 	imgPath := getImagePath(urlBase + htmlPath)
-	downloadImage(urlBase+string(imgPath), fileLocation)
+	imgFile := downloadImage(urlBase + string(imgPath))
+	os.Rename(imgFile.Name(), fileLocation)
 	cmd := exec.Command("gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file:///home/jm/Pictures/Wallpapers/apod.jpg")
 	cmd.Start()
 }
