@@ -19,4 +19,3 @@ func main() {
 	cmd := exec.Command("gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file:///home/jm/Pictures/Wallpapers/apod.jpg")
 	cmd.Start()
 }
-
