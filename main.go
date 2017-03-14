@@ -33,7 +33,14 @@ func getImagePath(htmlURL string) string {
 	return string(imgPath[1])
 }
 
+func usage() {
+	fmt.Fprintf(os.Stderr, "Usage: %s [OPTIONS] filename\n", os.Args[0])
+	flag.PrintDefaults()
+}
+
 func main() {
+	flag.Usage = usage
+
 	forceUpdate := flag.Bool("force", false, "Check for updates even if file has been modified today")
 	flag.Parse()
 	if flag.NArg() != 1 {
