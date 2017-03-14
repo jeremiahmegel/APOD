@@ -34,6 +34,7 @@ func getImagePath(htmlURL string) string {
 }
 
 func main() {
+	forceUpdate := flag.Bool("force", false, "Check for updates even if file has been modified today")
 	flag.Parse()
 	if flag.NArg() != 1 {
 		flag.Usage()
@@ -42,14 +43,16 @@ func main() {
 	fileLocation := flag.Arg(0)
 	fileLocationAbs, _ := filepath.Abs(fileLocation)
 
-	fileStat, err := os.Stat(fileLocationAbs)
-	if err == nil {
-		modTime := fileStat.ModTime()
-		now := time.Now()
-		todayMidnight := now.Truncate(24 * time.Hour)
-		if modTime.After(todayMidnight) {
-			fmt.Fprintln(os.Stderr, "File has been updated today; not checking for updates")
-			os.Exit(0)
+	if !*forceUpdate {
+		fileStat, err := os.Stat(fileLocationAbs)
+		if err == nil {
+			modTime := fileStat.ModTime()
+			now := time.Now()
+			todayMidnight := now.Truncate(24 * time.Hour)
+			if modTime.After(todayMidnight) {
+				fmt.Fprintln(os.Stderr, "File has been updated today; not checking for updates")
+				os.Exit(0)
+			}
 		}
 	}
 
