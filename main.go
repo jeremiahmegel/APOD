@@ -8,7 +8,6 @@ import (
 )
 
 func downloadImage(imageURL string, fileLocation string) {
-	print(imageURL, fileLocation)
 	imgResp, _ := http.Get(imageURL)
 	img, _ := ioutil.ReadAll(imgResp.Body)
 	ioutil.WriteFile(fileLocation, img, 0644)
