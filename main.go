@@ -32,8 +32,11 @@ func getImagePath(htmlURL string) string {
 }
 
 func main() {
-	// TODO Test for correct argument usage
 	flag.Parse()
+	if flag.NArg() != 1 {
+		flag.Usage()
+		os.Exit(1)
+	}
 	fileLocation := flag.Arg(0)
 	fileLocationAbs, _ := filepath.Abs(fileLocation)
 
