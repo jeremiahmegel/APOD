@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -31,9 +32,9 @@ func getImagePath(htmlURL string) string {
 }
 
 func main() {
-	args := os.Args
-	fileLocation := args[1]
 	// TODO Test for correct argument usage
+	flag.Parse()
+	fileLocation := flag.Arg(0)
 	fileLocationAbs, _ := filepath.Abs(fileLocation)
 
 	imgPath := getImagePath(urlBase + htmlPath)
