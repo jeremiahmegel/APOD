@@ -3,6 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"net/http"
+	"os"
 	"os/exec"
 	"regexp"
 )
@@ -27,8 +28,12 @@ func getImagePath(htmlURL string) string {
 }
 
 func main() {
+	args := os.Args
+	fileLocation := args[1]
+	// TODO Test for correct argument usage
+
 	imgPath := getImagePath(urlBase + htmlPath)
-	downloadImage(urlBase + string(imgPath), "/home/jm/Pictures/Wallpapers/apod.jpg")
+	downloadImage(urlBase+string(imgPath), fileLocation)
 	cmd := exec.Command("gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file:///home/jm/Pictures/Wallpapers/apod.jpg")
 	cmd.Start()
 }
