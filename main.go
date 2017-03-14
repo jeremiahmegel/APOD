@@ -37,6 +37,6 @@ func main() {
 	imgPath := getImagePath(urlBase + htmlPath)
 	imgFile := downloadImage(urlBase + string(imgPath))
 	os.Rename(imgFile.Name(), fileLocation)
-	cmd := exec.Command("gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file:///home/jm/Pictures/Wallpapers/apod.jpg")
+	cmd := exec.Command("gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file://"+fileLocation)
 	cmd.Start()
 }
