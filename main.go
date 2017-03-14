@@ -17,13 +17,18 @@ func downloadImage(imageURL string, fileLocation string) {
 	ioutil.WriteFile(fileLocation, img, 0644)
 }
 
-func main() {
+func getImagePath() string {
 	resp, _ := http.Get(urlBase + htmlPath)
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
 	imgRegex, _ := regexp.Compile("<a href=\"(image/[^\"]+)\"")
 	imgPath := imgRegex.FindSubmatch(body)
-	downloadImage(urlBase + string(imgPath[1]), "/home/jm/Pictures/Wallpapers/apod.jpg")
+	return string(imgPath[1])
+}
+
+func main() {
+	imgPath := getImagePath()
+	downloadImage(urlBase + string(imgPath), "/home/jm/Pictures/Wallpapers/apod.jpg")
 	cmd := exec.Command("gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file:///home/jm/Pictures/Wallpapers/apod.jpg")
 	cmd.Start()
 }
