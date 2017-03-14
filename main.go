@@ -33,6 +33,11 @@ func getImagePath(htmlURL string) string {
 	return string(imgPath[1])
 }
 
+func midnightToday(t time.Time) time.Time {
+	year, month, day := t.Date()
+	return time.Date(year, month, day, 0, 0, 0, 0, t.Location())
+}
+
 func usage() {
 	fmt.Fprintf(os.Stderr, "Usage: %s [OPTIONS] filename\n", os.Args[0])
 	flag.PrintDefaults()
@@ -55,8 +60,8 @@ func main() {
 		if err == nil {
 			modTime := fileStat.ModTime()
 			now := time.Now()
-			todayMidnight := now.Truncate(24 * time.Hour)
-			if modTime.After(todayMidnight) {
+			midnight := midnightToday(now)
+			if modTime.After(midnight) {
 				fmt.Fprintln(os.Stderr, "File has been updated today; not checking for updates")
 				os.Exit(0)
 			}
