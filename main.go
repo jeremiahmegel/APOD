@@ -50,7 +50,7 @@ func main() {
 	flag.Parse()
 	if flag.NArg() != 1 {
 		flag.Usage()
-		os.Exit(1)
+		os.Exit(2)
 	}
 	fileLocation := flag.Arg(0)
 	fileLocationAbs, _ := filepath.Abs(fileLocation)
@@ -63,7 +63,7 @@ func main() {
 			midnight := mostRecentMidnight(now)
 			if modTime.After(midnight) {
 				fmt.Fprintln(os.Stderr, "File has been updated today; not checking for updates")
-				os.Exit(0)
+				os.Exit(1)
 			}
 		}
 	}
